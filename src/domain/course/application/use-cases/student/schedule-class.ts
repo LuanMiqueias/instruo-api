@@ -2,6 +2,7 @@ import { Schedule } from '@/domain/course/enterprise/entities/schedule';
 import { ScheduleRepository } from '../../repositories/schedule-repository';
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import { StudentRepository } from '../../repositories/student-repository';
+import { ResourceNotFoundError } from '@/core/error/errors/resource-not-found-error';
 
 interface ScheduleClassUseCaseRequest {
   scheduleId: string;
@@ -30,8 +31,9 @@ export class ScheduleClassUseCase {
       new UniqueEntityID(scheduleId),
     );
 
-    if (!student) throw new Error();
-    if (!scheduleHasExists) throw new Error();
+    if (!student) throw new ResourceNotFoundError(`student: ${studentId}`);
+    if (!scheduleHasExists)
+      throw new ResourceNotFoundError(`schedule: ${scheduleId}`);
 
     await this.scheduleRepository.scheduleClass(
       new UniqueEntityID(studentId),

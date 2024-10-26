@@ -2,6 +2,7 @@ import { ScheduleRepository } from '../../repositories/schedule-repository';
 import { Schedule } from '@/domain/course/enterprise/entities/schedule';
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import { InstructorRepository } from '../../repositories/instructor-repository';
+import { ResourceNotFoundError } from '@/core/error/errors/resource-not-found-error';
 
 interface CreateScheduleUseCaseRequest {
   name: string;
@@ -31,7 +32,7 @@ export class CreateScheduleUseCase {
     const instructor = await this.instructorRepository.findById(instructorId);
 
     if (!instructor) {
-      throw new Error('Resource not found');
+      throw new ResourceNotFoundError(instructorId.toString());
     }
 
     const schedule = Schedule.create({
