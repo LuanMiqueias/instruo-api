@@ -1,3 +1,4 @@
+import { UniqueEntityID } from "@/core/entities/unique-entity-id"
 import { InstructorRepository } from "@/domain/course/application/repositories/instructor-repository"
 import { Instructor } from "@/domain/course/enterprise/entities/instructor"
 
@@ -9,6 +10,10 @@ export class InMemoryInstructorRepository implements InstructorRepository {
   }
 
   async findByEmail(email: string) {
-    return this.items.find(item => item.email === email) || null
+    return this.items.find(item => item?.email === email) || null
+  }
+  
+  async findById(id: UniqueEntityID) {
+    return this.items.find(item => item.id?.equals(id)) || null
   }
 }

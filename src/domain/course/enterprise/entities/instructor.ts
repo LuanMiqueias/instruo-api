@@ -6,6 +6,7 @@ export interface InstructorProps {
   name: string
   email: string
   password: string
+  courseId: UniqueEntityID
 }
 
 export class Instructor extends Entity<InstructorProps>{
@@ -19,6 +20,10 @@ export class Instructor extends Entity<InstructorProps>{
   
   get password(){
     return this.props.password
+  }
+  
+  get courseId(){
+    return this.props.courseId
   }
 
   static create (props: InstructorProps, id?:UniqueEntityID){

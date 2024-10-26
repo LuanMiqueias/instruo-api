@@ -1,11 +1,13 @@
 import { Instructor } from '@/domain/course/enterprise/entities/instructor';
-import { InstructorRepository } from '../../repositories/instructor-repository';
 import { InstructorAlreadyExistsError } from '../errors/instructor-already-exists';
+import { UniqueEntityID } from '@/core/entities/unique-entity-id';
+import { InstructorRepository } from '../../repositories/instructor-repository';
 
 interface RegisterInstructorUseCaseRequest {
   name: string;
   email: string;
   password: string;
+  courseId: UniqueEntityID;
 }
 
 interface RegisterInstructorUseCaseResponse {
@@ -19,18 +21,22 @@ export class RegisterInstructorUseCase {
     name,
     email,
     password,
+    courseId,
   }: RegisterInstructorUseCaseRequest): Promise<RegisterInstructorUseCaseResponse> {
     const instructor = Instructor.create({
       name,
       email,
       password,
+      courseId,
     });
-    const instructorWithSameEmail = await this.instructorRepository.findByEmail(email)
 
-    if(instructorWithSameEmail){
-      throw new InstructorAlreadyExistsError(email)
+    const instructorWithSameEmail =
+      await this.instructorRepository.findByEmail(email);
+
+    if (instructorWithSameEmail) {
+      throw new InstructorAlreadyExistsError(email);
     }
-    
+
     await this.instructorRepository.create(instructor);
 
     return { instructor };

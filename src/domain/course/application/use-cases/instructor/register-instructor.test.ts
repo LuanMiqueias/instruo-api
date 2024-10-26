@@ -1,6 +1,7 @@
 import { InMemoryInstructorRepository } from "test/repositories/in-memory-instructor"
 import { RegisterInstructorUseCase } from "./register-instructor"
 import { InstructorAlreadyExistsError } from "../errors/instructor-already-exists"
+import { UniqueEntityID } from "@/core/entities/unique-entity-id"
 
 let inMemoryInstructorRepository: InMemoryInstructorRepository
 
@@ -18,6 +19,7 @@ describe('Register Instructor', () => {
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: '123456',
+      courseId: new UniqueEntityID()
     })
 
     expect(result).toEqual({
@@ -30,12 +32,14 @@ describe('Register Instructor', () => {
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: '123456',
+      courseId: new UniqueEntityID()
     })
 
     expect(sut.execute({
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: '123456',
+      courseId: new UniqueEntityID()
     })).rejects.toBeInstanceOf(InstructorAlreadyExistsError)
   })
 })

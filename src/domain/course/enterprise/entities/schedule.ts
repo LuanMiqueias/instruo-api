@@ -6,8 +6,8 @@ import { Student } from "./student";
 export interface ScheduleProps {
   name: string
   description: string
-  instructorId: string
-  courseId: string
+  instructorId: UniqueEntityID
+  courseId: UniqueEntityID
   scheduledAt: Date
   students?: Student[]
 }
